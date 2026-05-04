@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Love ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;overflow:hidden}
+#wrap{width:100vw;height:100vh;position:relative;overflow:hidden}
+#login-screen{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(160deg,#ffe0ec,#fce4ff,#ffe8f0);
+  position:absolute;top:0;left:0;transition:opacity 0.8s,transform 0.8s;
+}
+#login-screen.hide{opacity:0;transform:scale(1.08);pointer-events:none}
+.lock-emoji{font-size:64px;display:block;margin-bottom:18px;animation:beat 1.8s ease-in-out infinite}
+#login-screen h2{font-size:26px;font-weight:700;color:#9a1f5f;margin-bottom:6px}
+#login-screen .sub{font-size:15px;color:#c06090;margin-bottom:30px}
+.input-row{display:flex;gap:10px;align-items:center;justify-content:center}
+#pass{
+  padding:12px 20px;border-radius:50px;border:2px solid #f0a0c8;
+  outline:none;font-size:17px;background:rgba(255,255,255,0.88);
+  color:#7a1040;width:170px;text-align:center;letter-spacing:5px;
+  font-family:'Tajawal',sans-serif;transition:border-color 0.2s,box-shadow 0.2s;
+}
+#pass:focus{border-color:#e060a8;box-shadow:0 0 0 4px rgba(232,96,154,0.15)}
+#open-btn{
+  padding:12px 24px;border-radius:50px;border:none;
+  background:#e8609a;color:#fff;font-size:15px;font-weight:700;
+  cursor:pointer;font-family:'Tajawal',sans-serif;transition:transform 0.15s,opacity 0.15s,box-shadow 0.2s;
+  box-shadow:0 4px 15px rgba(232,96,154,0.4);
+}
+#open-btn:hover{opacity:0.9;transform:scale(1.06);box-shadow:0 6px 20px rgba(232,96,154,0.5)}
+#open-btn:active{transform:scale(0.96)}
+#err-msg{color:#c0305a;font-size:13px;margin-top:14px;min-height:18px;animation:shake 0.4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#countdown-screen{
+  width:100%;height:100%;display:none;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(160deg,#ffd6e8,#fce4ff,#ffe0ec);
+  position:absolute;top:0;left:0;
+}
+#countdown-screen.show{display:flex}
+#count-num{
+  font-size:140px;font-weight:700;color:#e8609a;
+  animation:popIn 0.5s cubic-bezier(0.36,0.07,0.19,0.97);
+  text-shadow:0 8px 30px rgba(232,96,154,0.3);
+}
+@keyframes popIn{0%{transform:scale(0.3);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+#count-label{font-size:20px;color:#b03070;margin-top:10px;font-weight:700}
+#content-screen{
+  width:100%;height:100%;display:none;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:30px 24px;overflow-y:auto;
+  background:linear-gradient(160deg,#ffe0ec,#fce4ff,#ffd6e8);
+  position:absolute;top:0;left:0;
+  opacity:0;transition:opacity 1s;
+}
+#content-screen.show{display:flex}
+#content-screen.visible{opacity:1}
+.big-heart{font-size:52px;display:block;margin-bottom:10px;animation:beat 1.5s ease-in-out infinite;cursor:pointer}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+#content-screen h1{font-size:28px;font-weight:700;color:#8a1550;margin-bottom:10px;animation:slideDown 0.8s ease}
+@keyframes slideDown{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}
+#counter{
+  font-size:14px;color:#b03070;font-weight:700;margin-bottom:18px;
+  background:rgba(255,255,255,0.55);padding:8px 20px;border-radius:50px;
+  display:inline-block;backdrop-filter:blur(4px);animation:slideDown 1s ease;
+}
+#msg{
+  font-size:16px;color:#7a2050;line-height:2;direction:rtl;margin-bottom:20px;
+  background:rgba(255,255,255,0.5);padding:18px 24px;border-radius:20px;max-width:420px;
+  animation:fadeUp 1.2s ease;backdrop-filter:blur(4px);
+}
+@keyframes fadeUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+#audio-wrap{margin-bottom:18px;animation:fadeUp 1.4s ease}
+audio{border-radius:40px;outline:none;width:260px}
+#surprise-wrap{margin-bottom:16px;animation:fadeUp 1.6s ease}
+#surp-btn{
+  padding:12px 28px;border-radius:50px;border:none;
+  background:#e8609a;color:#fff;font-size:16px;font-weight:700;
+  cursor:pointer;font-family:'Tajawal',sans-serif;
+  transition:transform 0.15s,box-shadow 0.2s;
+  box-shadow:0 4px 15px rgba(232,96,154,0.4);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 4px 15px rgba(232,96,154,0.4)}50%{box-shadow:0 4px 25px rgba(232,96,154,0.7)}}
+#surp-btn:hover{transform:scale(1.07)}
+#surp-btn:active{transform:scale(0.96)}
+#surpriseText{
+  display:none;font-size:20px;margin-top:16px;
+  color:#8a1550;font-weight:700;direction:rtl;
+  animation:bounceIn 0.6s cubic-bezier(0.36,0.07,0.19,0.97);
+}
+@keyframes bounceIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+#replay-btn{
+  margin-top:6px;padding:10px 22px;border-radius:50px;border:2px solid #e8609a;
+  background:transparent;color:#e8609a;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Tajawal',sans-serif;transition:all 0.2s;display:none;
+}
+#replay-btn:hover{background:#e8609a;color:#fff}
+.particle{position:absolute;pointer-events:none;animation:floatUp linear infinite;opacity:0;user-select:none}
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(0deg) scale(1);opacity:0.8}
+  100%{transform:translateY(-110vh) rotate(360deg) scale(0.4);opacity:0}
+}
+.star{
+  position:absolute;pointer-events:none;
+  width:4px;height:4px;border-radius:50%;background:#ffb3d1;
+  animation:twinkle 2s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:0.2;transform:scale(1)}50%{opacity:1;transform:scale(1.6)}}
+.confetti-piece{
+  position:absolute;width:10px;height:10px;pointer-events:none;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(232,96,154,0.25);
+  animation:rippleOut 0.7s ease-out forwards;
+  pointer-events:none;transform:translate(-50%,-50%);
+}
+@keyframes rippleOut{from{width:0;height:0;opacity:1}to{width:200px;height:200px;opacity:0}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stars-bg"></div>
+
+  <div id="login-screen">
+    <span class="lock-emoji">🎁</span>
+    <h2 id="login-title">Enter Password</h2>
+    <p class="sub" id="login-sub">في مفاجأة بتستناكِ 💕</p>
+    <div class="input-row">
+      <input type="password" id="pass" placeholder="••••••" maxlength="10"
+             onkeydown="if(event.key==='Enter')check()">
+      <button id="open-btn" onclick="check()">Open 🎀</button>
+    </div>
+    <div id="err-msg"></div>
+  </div>
+
+  <div id="countdown-screen">
+    <div id="count-num">3</div>
+    <div id="count-label">استني... 💕</div>
+  </div>
+
+  <div id="content-screen" onclick="createRipple(event)">
+    <span class="big-heart" onclick="heartClick(event)">❤️</span>
+    <h1 id="main-title">Happy Birthday My Love 🎂</h1>
+    <div id="counter">جاري الحساب...</div>
+    <div id="msg">
+      كل سنة وانتِ أجمل حاجة حصلتلي 💕<br>
+      وجودك في حياتي فرق معايا في كل حاجة،<br>
+      وضحكتك هي أكتر حاجة بتفرحني 💖<br><br>
+      أتمنى أفضل جنبك دايمًا<br>
+      ونكمل كل حاجة حلوة مع بعض 🎂❤️
+    </div>
+    <div id="audio-wrap">
+      <audio controls autoplay>
+        <source src="song.mp3" type="audio/mpeg">
+        المتصفح مش بيدعم الصوت
+      </audio>
+    </div>
+    <div id="surprise-wrap">
+      <button id="surp-btn" onclick="showSurprise()">اضغط هنا 🎁</button>
+      <p id="surpriseText"></p>
+    </div>
+    <button id="replay-btn" onclick="replayPage()">↺ من تاني</button>
+  </div>
+</div>
+
+<script>
+  // ==============================
+  // البيانات الشخصية — عدّلها هنا
+  // ==============================
+  var PASSWORD   = "552004";
+  var START_DATE = new Date("2026-03-27");
+  var surpriseMessages = [
+    "كل سنة وانتِ أغلى حاجة عندي 💕",
+    "أنا بحبك أكتر من أي حاجة ❤️🥹",
+    "وجودك في حياتي أحلى هدية 🎁💕",
+    "ضحكتك بتنور يومي كله ☀️💖",
+    "معاكِ بحس إن كل حاجة حلوة 🌹",
+    "أنتِ أحلى قصة في حياتي 📖❤️",
+    "مش بس بحبك، أنا مبسوط إنك موجودة 💫"
+  ];
+  // ==============================
+
+  var surpriseIndex = 0;
+  var heartsInterval;
+  var counterInterval;
+
+  document.getElementById("login-sub").textContent  = "في مفاجأة بتستناكِ يا Basbosty 💕";
+  document.getElementById("main-title").textContent = "Happy Birthday Ro7 Alby 🎂";
+  document.getElementById("count-label").textContent = "استني يا Basbosty... 💕";
+
+  (function(){
+    var bg = document.getElementById("stars-bg");
+    bg.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0";
+    for(var i=0;i<60;i++){
+      var s = document.createElement("div");
+      s.className = "star";
+      s.style.left = Math.random()*100+"%";
+      s.style.top = Math.random()*100+"%";
+      s.style.animationDelay = Math.random()*3+"s";
+      s.style.animationDuration = (1.5+Math.random()*2)+"s";
+      bg.appendChild(s);
+    }
+  })();
+
+  function check(){
+    var v = document.getElementById("pass").value;
+    if(v === PASSWORD){
+      document.getElementById("login-screen").classList.add("hide");
+      setTimeout(startCountdown, 800);
+    } else {
+      var e = document.getElementById("err-msg");
+      e.textContent = "كلمة السر غلط 😢";
+      e.style.animation = "none";
+      setTimeout(function(){ e.style.animation = "shake 0.4s ease"; },10);
+      setTimeout(function(){ e.textContent = ""; },2500);
+    }
+  }
+
+  function startCountdown(){
+    var cd = document.getElementById("countdown-screen");
+    var num = document.getElementById("count-num");
+    cd.classList.add("show");
+    var count = 3;
+    num.textContent = count;
+    var iv = setInterval(function(){
+      count--;
+      if(count === 0){
+        num.textContent = "🎉";
+        document.getElementById("count-label").textContent = "يلا يا Basbosty! 💕";
+        clearInterval(iv);
+        setTimeout(showContent, 900);
+      } else {
+        num.textContent = count;
+        num.style.animation = "none";
+        setTimeout(function(){ num.style.animation = "popIn 0.5s cubic-bezier(0.36,0.07,0.19,0.97)"; },10);
+      }
+    },900);
+  }
+
+  function showContent(){
+    document.getElementById("countdown-screen").classList.remove("show");
+    var c = document.getElementById("content-screen");
+    c.classList.add("show");
+    setTimeout(function(){ c.classList.add("visible"); },50);
+    startHearts();
+    launchConfetti();
+    updateCounter();
+    counterInterval = setInterval(updateCounter,1000);
+  }
+
+  function updateCounter(){
+    var now = new Date();
+    var diff = now - START_DATE;
+    var days  = Math.floor(diff/86400000);
+    var hours = Math.floor((diff%86400000)/3600000);
+    var mins  = Math.floor((diff%3600000)/60000);
+    var secs  = Math.floor((diff%60000)/1000);
+    document.getElementById("counter").textContent =
+      "مع بعض بقالنا "+days+" يوم و "+hours+" ساعة و "+mins+" دقيقة و "+secs+" ثانية ❤️";
+  }
+
+  function startHearts(){
+    var emojis = ["❤️","💕","💖","💗","💓","🌹","✨","💫","🌸","💝"];
+    heartsInterval = setInterval(function(){
+      var h = document.createElement("div");
+      h.className = "particle";
+      h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left = Math.random()*95+"%";
+      h.style.bottom = "-40px";
+      h.style.fontSize = (14+Math.random()*20)+"px";
+      h.style.animationDuration = (5+Math.random()*5)+"s";
+      h.style.animationDelay = "0s";
+      document.getElementById("content-screen").appendChild(h);
+      setTimeout(function(){ h.remove(); },10000);
+    },300);
+  }
+
+  function launchConfetti(){
+    var colors=["#e8609a","#ff99cc","#ffb3d9","#cc4488","#ff66aa","#ffccee","#ffffff"];
+    for(var i=0;i<80;i++){
+      (function(i){
+        setTimeout(function(){
+          var c=document.createElement("div");
+          c.className="confetti-piece";
+          c.style.left=Math.random()*100+"%";
+          c.style.top="-10px";
+          c.style.background=colors[Math.floor(Math.random()*colors.length)];
+          c.style.borderRadius=Math.random()>0.5?"50%":"2px";
+          c.style.width=(6+Math.random()*10)+"px";
+          c.style.height=(6+Math.random()*10)+"px";
+          c.style.animationDuration=(2+Math.random()*3)+"s";
+          c.style.animationDelay=Math.random()*0.5+"s";
+          document.getElementById("content-screen").appendChild(c);
+          setTimeout(function(){ c.remove(); },5000);
+        },i*30);
+      })(i);
+    }
+  }
+
+  function showSurprise(){
+    var t = document.getElementById("surpriseText");
+    t.textContent = surpriseMessages[surpriseIndex % surpriseMessages.length];
+    surpriseIndex++;
+    t.style.display = "block";
+    t.style.animation = "none";
+    setTimeout(function(){ t.style.animation = "bounceIn 0.6s cubic-bezier(0.36,0.07,0.19,0.97)"; },10);
+    document.getElementById("surp-btn").textContent = "كمّل 💕";
+    document.getElementById("replay-btn").style.display = "inline-block";
+    launchConfetti();
+  }
+
+  function heartClick(e){
+    e.stopPropagation();
+    for(var i=0;i<8;i++){
+      var h=document.createElement("div");
+      h.className="particle";
+      h.textContent="❤️";
+      h.style.left=(e.clientX-10+Math.random()*40-20)+"px";
+      h.style.top=(e.clientY+10)+"px";
+      h.style.position="fixed";
+      h.style.fontSize=(12+Math.random()*14)+"px";
+      h.style.animationDuration=(1+Math.random()*1.5)+"s";
+      document.body.appendChild(h);
+      setTimeout(function(){ h.remove(); },2500);
+    }
+  }
+
+  function createRipple(e){
+    if(e.target.tagName==="BUTTON"||e.target.tagName==="AUDIO"||e.target.className==="big-heart") return;
+    var r=document.createElement("div");
+    r.className="ripple";
+    r.style.left=e.clientX+"px";
+    r.style.top=e.clientY+"px";
+    r.style.position="fixed";
+    document.body.appendChild(r);
+    setTimeout(function(){ r.remove(); },700);
+  }
+
+  function replayPage(){
+    clearInterval(heartsInterval);
+    clearInterval(counterInterval);
+    surpriseIndex=0;
+    document.getElementById("content-screen").classList.remove("show","visible");
+    document.getElementById("surpriseText").style.display="none";
+    document.getElementById("surp-btn").textContent="اضغط هنا 🎁";
+    document.getElementById("replay-btn").style.display="none";
+    document.getElementById("pass").value="";
+    document.getElementById("err-msg").textContent="";
+    setTimeout(function(){
+      document.getElementById("login-screen").classList.remove("hide");
+    },100);
+  }
+</script>
+</body>
+</html>
